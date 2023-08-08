@@ -9,12 +9,13 @@
 #include <packio/server.h>
 #include <fmt/core.h>
 #include <exception>
+#include <string>
 
 namespace asio { using namespace boost::asio; }
 
-auto some_foo(int i) -> io::coro<void>
+auto some_foo(std::string str) -> io::coro<void>
 {
-	fmt::print("[some_foo] - called, value: '{}'.\n", i);
+	fmt::print("[some_foo] - called, value: '{}'.\n", str);
 	co_return;
 }
 
