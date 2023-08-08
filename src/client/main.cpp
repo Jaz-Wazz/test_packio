@@ -8,6 +8,7 @@
 #include <packio/client.h>
 #include <fmt/core.h>
 #include <exception>
+#include <tuple>
 
 namespace asio { using namespace boost::asio; }
 
@@ -17,7 +18,7 @@ auto coro(asio::io_context & executor) -> io::coro<void>
 	co_await socket.async_connect({asio::ip::make_address("127.0.0.1"), 555}, io::use_coro);
 
 	auto client = packio::make_client<packio::json_rpc::rpc>(std::move(socket));
-	co_await client->async_call("some_foo", io::use_coro);
+	co_await client->async_call("some_foo", std::tuple(543), io::use_coro);
 
 	fmt::print("sis.\n");
 	co_return;

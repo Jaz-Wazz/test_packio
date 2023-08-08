@@ -12,9 +12,9 @@
 
 namespace asio { using namespace boost::asio; }
 
-auto some_foo() -> io::coro<void>
+auto some_foo(int i) -> io::coro<void>
 {
-	fmt::print("[some_foo] - called.\n");
+	fmt::print("[some_foo] - called, value: '{}'.\n", i);
 	co_return;
 }
 
