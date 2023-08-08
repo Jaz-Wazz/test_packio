@@ -1,4 +1,7 @@
 
+#include <boost/json/conversion.hpp>
+#include <boost/json/value.hpp>
+#include <boost/json/value_to.hpp>
 #include <iofox.hpp>
 #include <boost/asio/io_context.hpp>
 #include <boost/asio/ip/address.hpp>
@@ -13,9 +16,21 @@
 
 namespace asio { using namespace boost::asio; }
 
-auto some_foo(std::string str) -> io::coro<void>
+class package
 {
-	fmt::print("[some_foo] - called, value: '{}'.\n", str);
+	public: int i = 10;
+};
+
+auto tag_invoke(boost::json::value_to_tag<package>, const boost::json::value & value) -> package
+{
+    package pkg;
+	pkg.i = boost::json::value_to<int>(value.at("i"));
+    return pkg;
+}
+
+auto some_foo(package pkg) -> io::coro<void>
+{
+	fmt::print("[some_foo] - called, value: '{}'.\n", pkg.i);
 	co_return;
 }
 
