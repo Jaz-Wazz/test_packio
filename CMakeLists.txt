@@ -8,9 +8,10 @@ include("FetchContent")
 project("test_packio")
 
 # Find libs.
-find_package("Boost" REQUIRED "system" "url")
+find_package("Boost" REQUIRED "system" "url" "json")
 find_package("fmt" REQUIRED)
 find_package("OpenSSL" REQUIRED)
+find_package("msgpackc" REQUIRED)
 
 # [PackIO] - Download.
 FetchContent_Populate("packio_package" URL "https://github.com/qchateau/packio/archive/master.zip")
@@ -26,6 +27,7 @@ target_include_directories("packio" INTERFACE
 # [PackIO] - Linkage.
 target_link_libraries("packio" INTERFACE
 	Boost::system
+	Boost::json
 )
 
 # Find sources.
