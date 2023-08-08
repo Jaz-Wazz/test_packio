@@ -8,6 +8,7 @@
 #include <packio/client.h>
 #include <fmt/core.h>
 #include <exception>
+#include <vector>
 #include <array>
 #include <tuple>
 
@@ -18,7 +19,10 @@ auto coro(asio::io_context & executor) -> io::coro<void>
 	asio::ip::tcp::socket socket {executor};
 	co_await socket.async_connect({asio::ip::make_address("127.0.0.1"), 555}, io::use_coro);
 
-	std::array<char, 8> buffer {'a', 'b', 'c', 'g', 'a', 'r', 'o', 'x'};
+	// std::vector<char> buffer = {'g', 'a', 'r', 'o', 'x'};
+
+	// char * buffer = new char[128];
+	// auto buffer = new std::array<char, 128>;
 
 	auto client = packio::make_client<packio::json_rpc::rpc>(std::move(socket));
 	co_await client->async_call("some_foo", std::tuple(buffer), io::use_coro);
