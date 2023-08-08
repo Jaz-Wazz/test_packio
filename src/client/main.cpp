@@ -8,33 +8,20 @@
 #include <packio/client.h>
 #include <fmt/core.h>
 #include <exception>
+#include <array>
 #include <tuple>
 
 namespace asio { using namespace boost::asio; }
-
-class package
-{
-	public: int i = 10;
-};
-
-void tag_invoke(boost::json::value_from_tag, boost::json::value & value, const package & pkg)
-{
-	value =
-	{
-		{"i", pkg.i}
-	};
-}
 
 auto coro(asio::io_context & executor) -> io::coro<void>
 {
 	asio::ip::tcp::socket socket {executor};
 	co_await socket.async_connect({asio::ip::make_address("127.0.0.1"), 555}, io::use_coro);
 
-	package pkg;
-	pkg.i = 444;
+	std::array<char, 8> buffer {'a', 'b', 'c', 'g', 'a', 'r', 'o', 'x'};
 
 	auto client = packio::make_client<packio::json_rpc::rpc>(std::move(socket));
-	co_await client->async_call("some_foo", std::tuple(pkg), io::use_coro);
+	co_await client->async_call("some_foo", std::tuple(buffer), io::use_coro);
 
 	fmt::print("sis.\n");
 	co_return;

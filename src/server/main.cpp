@@ -1,7 +1,4 @@
 
-#include <boost/json/conversion.hpp>
-#include <boost/json/value.hpp>
-#include <boost/json/value_to.hpp>
 #include <iofox.hpp>
 #include <boost/asio/io_context.hpp>
 #include <boost/asio/ip/address.hpp>
@@ -10,27 +7,17 @@
 #include <packio/json_rpc/rpc.h>
 #include <packio/dispatcher.h>
 #include <packio/server.h>
+#include <string_view>
 #include <fmt/core.h>
 #include <exception>
+#include <array>
 #include <string>
 
 namespace asio { using namespace boost::asio; }
 
-class package
+auto some_foo(std::array<char, 8> buffer) -> io::coro<void>
 {
-	public: int i = 10;
-};
-
-auto tag_invoke(boost::json::value_to_tag<package>, const boost::json::value & value) -> package
-{
-    package pkg;
-	pkg.i = boost::json::value_to<int>(value.at("i"));
-    return pkg;
-}
-
-auto some_foo(package pkg) -> io::coro<void>
-{
-	fmt::print("[some_foo] - called, value: '{}'.\n", pkg.i);
+	fmt::print("[some_foo] - called, buffer: '{}'.\n", std::string_view(buffer.data(), buffer.size()));
 	co_return;
 }
 
