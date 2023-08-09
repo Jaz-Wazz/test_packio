@@ -19,7 +19,7 @@ auto coro(asio::io_context & executor) -> io::coro<void>
 	asio::ip::tcp::socket socket {executor};
 	co_await socket.async_connect({asio::ip::make_address("127.0.0.1"), 555}, io::use_coro);
 
-	// std::vector<char> buffer = {'g', 'a', 'r', 'o', 'x'};
+	std::vector<char> buffer = {'g', 'a', 'r', 'o', 'x'};
 
 	// char * buffer = new char[128];
 	// auto buffer = new std::array<char, 128>;
