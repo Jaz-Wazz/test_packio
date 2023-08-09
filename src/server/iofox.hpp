@@ -157,7 +157,7 @@ namespace io::ssl
 
 	inline void load_ca_certificates(auto & executor, std::string path)
 	{
-		asio::co_spawn(executor, [=] -> io::coro<void>
+		asio::co_spawn(executor, [=]() -> io::coro<void>
 		{
 			asio::ssl::context & ctx = co_await io::ssl::context();
 			ctx.load_verify_file(path);
