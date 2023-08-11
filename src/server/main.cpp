@@ -4,7 +4,7 @@
 #include <boost/asio/ip/address.hpp>
 #include <boost/asio/co_spawn.hpp>
 #include <boost/asio/ip/tcp.hpp>
-#include <packio/json_rpc/rpc.h>
+#include <packio/msgpack_rpc/rpc.h>
 #include <packio/dispatcher.h>
 #include <packio/server.h>
 #include <string_view>
@@ -28,7 +28,7 @@ int main() try
 	asio::io_context ctx;
 
 	asio::ip::tcp::acceptor acceptor {ctx, {asio::ip::make_address("127.0.0.1"), 555}};
-	auto server = packio::make_server<packio::json_rpc::rpc>(std::move(acceptor));
+	auto server = packio::make_server<packio::msgpack_rpc::rpc>(std::move(acceptor));
 	server->dispatcher()->add_coro("some_foo", ctx, &some_foo);
 	server->async_serve_forever();
 

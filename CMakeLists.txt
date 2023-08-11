@@ -29,6 +29,22 @@ target_link_libraries("packio" INTERFACE
 	Boost::json
 )
 
+# [Msgpack] - Download.
+FetchContent_Populate("msgpack_package" URL "https://github.com/msgpack/msgpack-c/archive/cpp_master.zip")
+
+# [Msgpack] - Make library.
+add_library("msgpack" INTERFACE)
+
+# [Msgpack] - Add includes.
+target_include_directories("msgpack" INTERFACE
+	"${msgpack_package_SOURCE_DIR}/include"
+)
+
+# [Msgpack] - Linkage.
+target_link_libraries("msgpack" INTERFACE
+	Boost::system
+)
+
 # Find sources.
 file(GLOB_RECURSE src_server "src/server/*")
 file(GLOB_RECURSE src_client "src/client/*")
@@ -55,6 +71,7 @@ target_link_libraries("server" PRIVATE
 	ws2_32
 	wsock32
 	packio
+	msgpack
 )
 target_link_libraries("client" PRIVATE
 	Boost::system
@@ -65,6 +82,7 @@ target_link_libraries("client" PRIVATE
 	ws2_32
 	wsock32
 	packio
+	msgpack
 )
 
 # [Target] - Includes.

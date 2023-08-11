@@ -4,7 +4,7 @@
 #include <boost/asio/ip/address.hpp>
 #include <boost/asio/co_spawn.hpp>
 #include <boost/asio/ip/tcp.hpp>
-#include <packio/json_rpc/rpc.h>
+#include <packio/msgpack_rpc/rpc.h>
 #include <packio/client.h>
 #include <fmt/core.h>
 #include <exception>
@@ -24,7 +24,7 @@ auto coro(asio::io_context & executor) -> io::coro<void>
 	// char * buffer = new char[128];
 	// auto buffer = new std::array<char, 128>;
 
-	auto client = packio::make_client<packio::json_rpc::rpc>(std::move(socket));
+	auto client = packio::make_client<packio::msgpack_rpc::rpc>(std::move(socket));
 	co_await client->async_call("some_foo", std::tuple(buffer), io::use_coro);
 
 	fmt::print("sis.\n");
