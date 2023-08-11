@@ -14,6 +14,12 @@
 
 namespace asio { using namespace boost::asio; }
 
+struct container
+{
+	int i = 55;
+	MSGPACK_DEFINE(i);
+};
+
 auto coro(asio::io_context & executor) -> io::coro<void>
 {
 	asio::ip::tcp::socket socket {executor};
@@ -23,9 +29,10 @@ auto coro(asio::io_context & executor) -> io::coro<void>
 
 	// char * buffer = new char[128];
 	// auto buffer = new std::array<char, 128>;
+	container container;
 
 	auto client = packio::make_client<packio::msgpack_rpc::rpc>(std::move(socket));
-	co_await client->async_call("some_foo", std::tuple(buffer), io::use_coro);
+	co_await client->async_call("some_foo", std::tuple(container), io::use_coro);
 
 	fmt::print("sis.\n");
 	co_return;

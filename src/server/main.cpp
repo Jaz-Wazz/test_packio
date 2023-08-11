@@ -16,9 +16,15 @@
 
 namespace asio { using namespace boost::asio; }
 
-auto some_foo(std::vector<char> buffer) -> io::coro<void>
+struct container
 {
-	fmt::print("[some_foo] - called, buffer: '{}'.\n", std::string_view(buffer.data(), buffer.size()));
+	int i = 55;
+	MSGPACK_DEFINE(i);
+};
+
+auto some_foo(container container) -> io::coro<void>
+{
+	fmt::print("[some_foo] - called, container value: '{}'.\n", container.i);
 	co_return;
 }
 
