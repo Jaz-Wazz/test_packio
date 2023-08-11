@@ -17,7 +17,11 @@ namespace asio { using namespace boost::asio; }
 struct container
 {
 	int i = 55;
-	MSGPACK_DEFINE(i);
+
+	void msgpack_pack(auto & packer) const
+	{
+		msgpack::type::make_define_array(i).msgpack_pack(packer);
+	}
 };
 
 auto coro(asio::io_context & executor) -> io::coro<void>

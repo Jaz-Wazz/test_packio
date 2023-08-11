@@ -19,7 +19,11 @@ namespace asio { using namespace boost::asio; }
 struct container
 {
 	int i = 55;
-	MSGPACK_DEFINE(i);
+
+	void msgpack_unpack(msgpack::object const & object)
+	{
+		msgpack::type::make_define_array(i).msgpack_unpack(object);
+	}
 };
 
 auto some_foo(container container) -> io::coro<void>
